@@ -1,0 +1,4 @@
+{
+  "source": ["custom.pipeline"],
+  "detail-type": ["temperatura_alta"]
+}

@@ -1,0 +1,4 @@
+Estado,Temperatura
+Sonora,45
+CDMX,22
+Monterrey,39
