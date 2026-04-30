@@ -10,22 +10,21 @@ phases:
   pre_build:
     commands:
       - echo "Validando archivos"
-      - test -f app/procesar.py  || exit 1
-      - test -f app/datos.txt    || exit 1
+      - test -f procesar.py || exit 1
+      - test -f datos.txt   || exit 1
       - echo "Archivos validados"
 
   build:
     commands:
       - echo "Ejecutando procesador"
-      - cd app && python procesar.py
-      - cd ..
+      - python procesar.py
 
   post_build:
     commands:
       - echo "Subiendo log a S3"
-      - aws s3 cp app/backup.log s3://$BUCKET_NAME/backup.log
+      - aws s3 cp backup.log s3://$BUCKET_NAME/backup.log
       - echo "Completado"
 
 artifacts:
   files:
-    - app/backup.log
+    - backup.log
