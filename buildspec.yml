@@ -3,8 +3,29 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      python: 3.x
+      python: 3.11
+    commands:
+      - pip install boto3 --quiet
+
+  pre_build:
+    commands:
+      - echo "Validando archivos"
+      - test -f app/procesar.py  || exit 1
+      - test -f app/datos.txt    || exit 1
+      - echo "Archivos validados"
+
   build:
     commands:
-      - echo Ejecutando análisis
-      - python procesar.py
+      - echo "Ejecutando procesador"
+      - cd app && python procesar.py
+      - cd ..
+
+  post_build:
+    commands:
+      - echo "Subiendo log a S3"
+      - aws s3 cp app/backup.log s3://$BUCKET_NAME/backup.log
+      - echo "Completado"
+
+artifacts:
+  files:
+    - app/backup.log
